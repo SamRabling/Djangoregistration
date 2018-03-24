@@ -61,11 +61,13 @@
     <br>
 
     <form class="wrapper" action="/process" method="POST">
-        {% csrf_token %} Email:
-        <input class="field" type="text" name="email"> Password:
-        <input class="field" type="text" name="first_name">
+        {% csrf_token %} 
+        Email:<input class="field" type="text" name="email"> 
+        Password:
+        <input class="field" type="text" name="password">
         <input class="field" type="submit">
     </form>
+    <p>This is a change to practice</p>
     </div>
 
 </body>
