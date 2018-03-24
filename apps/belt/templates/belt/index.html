@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+<style>
+    * {
+        font-family: Arial, Helvetica, sans-serif;
+    }
+
+    .field{
+        display: block;
+        margin-bottom: 10px;
+    }
+
+    .wrapper{
+        width:200px;
+        padding-left: 20px;
+        display: inline-block;
+    }
+
+    .wrapper2{
+        width:200px;
+        border-right: 2px solid black;
+        padding-left: 20px;
+        display: inline-block;
+    }
+    .registration{
+        display: inline-block;
+        width: 620px;
+        height: 250px;
+        vertical-align: top;
+    }
+
+</style>
+
+<body>
+    
+    
+    {% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+        <li{% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}</li>
+            {% endfor %}
+    </ul>
+    {% endif %}
+    <h2>Registration</h2>
+    <div class="registration">
+    <form class= "wrapper2" action="/create" method="POST">
+        {% csrf_token %} First name:
+        <input class="field" type="text" name="first_name"> Last name:
+        <input class="field" type="text" name="last_name"> Email:
+        <input class="field" type="text" name="email"> Password:
+        <input class="field" type="text" name="Password"> Confirm PW:
+        <input class="field" type="text" name="confirm_pw">
+        <input type="submit">
+    </form>
+    <br>
+    <br>
+
+    <form class="wrapper" action="/process" method="POST">
+        {% csrf_token %} Email:
+        <input class="field" type="text" name="email"> Password:
+        <input class="field" type="text" name="first_name">
+        <input class="field" type="submit">
+    </form>
+    </div>
+
+</body>
+
+</html>
