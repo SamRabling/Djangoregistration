@@ -30,13 +30,16 @@ def create(request):
 
 def process(request):
     print "process engaged"
-    erros = User.objects.log_basic_validator(request.POST)
+    errors = User.objects.log_basic_validator(request.POST)
     if len(errors):
         for tag, errors in errors.iteritems():
             messages.error(request, errors, extra_tags=tag)
-            return redirect('success')
-    request.session['id'] = user.id
+            print "validation in process"
+            return redirect('/')
+    email = request.POST['email']
+    request.session['id'] = User.objects.get(email=email).id
     print "validation in process"
+    return redirect('/success')
 
 def success(request):
     if 'id' not in request.session:

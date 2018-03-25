@@ -24,11 +24,12 @@ class RegistrationManager(models.Manager):
             error['ex_email'] = "You already have an account"
         return errors
     def log_basic_validator(self, postData):
+        errors ={}
         if not EMAILREGEX.match(postData['email']):
             errors['email'] = "Your email needs to have the correct format."
-        if User.objects.filter(email=postData['email']) != User.objects.email.filter(id = postData['id']):
-            errors['notexist'] = "We couldn't find your email, please create an account"
-        if bcrypt.checkpw(password.encode(), hashed.encode()):
+        password = User.objects.get(email=postData['email']).password
+        print password
+        if bcrypt.checkpw(postData['Password'].encode(), password.encode()) != True:
             errors['Password'] = "Please revise your email and password"
         return errors
 
