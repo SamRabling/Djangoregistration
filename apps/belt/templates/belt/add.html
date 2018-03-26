@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Belt Exam</title>
+</head>
+<style>
+* {
+        font-family: Arial, Helvetica, sans-serif;
+    }
+
+h1, .link{
+    display:inline-block;
+}
+h1 {
+    margin-right: 300px;
+}
+</style>
+<body>
+    <div class="header">
+        <h1> Create a New Wish List Item</h1>
+        <a class="link"href="dashboard">Home</a>
+        <a class="link"href="./logout">Logout</a>
+    </div>
+
+    {% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+        <li{% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}</li>
+            {% endfor %}
+    </ul>
+    {% endif %}
+
+    <div>
+        <form action="add_item" method="POST">
+        {% csrf_token %}
+            Item/Product
+            <input class="field" type="text" name="name">
+            <input type="submit">
+        </form>
+    </div>
+</body>
+</html>

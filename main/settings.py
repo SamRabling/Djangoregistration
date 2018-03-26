@@ -24,9 +24,10 @@ SECRET_KEY = 'ylmbjikc@pi^n@jpy!qi)q2+*nrdbxcc$^hnkkg$#kaxspd=r*'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
+# DEBUG = True
 
 ALLOWED_HOSTS = ['54.183.33.134']
-
+# ALLOWED_HOSTS = []
 
 # Application definition
 

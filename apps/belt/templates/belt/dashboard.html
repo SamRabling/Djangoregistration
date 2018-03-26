@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Belt Exam</title>
+</head>
+<style>
+    * {
+        font-family: Arial, Helvetica, sans-serif;
+    }
+    
+    .title{
+        display:inline-block;
+        font-weight: bold;
+        margin-right: 100px;
+    }
+    .rowtitles{
+        display:block;
+    }
+    .item_row{
+       display:inline-block; 
+    }
+    .rows{  
+        display:block; 
+    }
+
+    .othersList{
+        margin-bottom: 60px;
+    }
+</style>
+
+<body>
+
+    <h1> Welcome, {{ first_name }} !</h1>
+
+    <a href="logout">Logout</a>
+    <h3> Your Wish List:</h3>
+    <div class="userList">
+        <div class="rowtitles">
+            <p class="title">Item</p>
+            <p class="title">Added By</p>
+            <p class="title">Date Added</p>
+            <p class="title">Action</p>
+        </div>
+
+        {% for item in items %}
+        <div class="rows">
+            <p class="item_row"> <a href="items">{{ item.name }} </a> </p>
+            <p class="item_row"> {{ item.user }} </p>
+            <p class="item_row"> {{ user.item.created_at }} </p>
+            <p class="item_row"> <a href="destroy">Remove from my wishlist</a></p>
+        </div>
+        {% endfor %}
+    </div>
+    <div class="othersList"></div>
+        <h3> Your Wish List:</h3>
+        <div class="userList">
+            <div class="rowtitles">
+                <p class="title">Item</p>
+                <p class="title">Added By</p>
+                <p class="title">Date Added</p>
+                <p class="title">Action</p>
+            </div>
+        
+            {% for item in items %}
+            <div class="rows">
+                <p class="item_row"> <a href="items">{{ name }}</a> </p>
+                <p class="item_row"> {{ user }} </p>
+                <p class="item_row"> {{ created_at }} </p>
+                <p class="item_row"> <a href="delete">Remove from my wishlist</a> </p>
+            </div>
+            {% endfor %}
+    </div>
+    <p><a href="wished_items/create">Add Item</a></p>
+</body>
+
+</html>
