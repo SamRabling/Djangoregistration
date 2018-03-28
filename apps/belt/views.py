@@ -39,45 +39,88 @@ def process(request):
 ## -------------------- PAGES ----
 def index(request):
     print "index engaged"
-    context={
-        'users':User.objects.all()
-    }
-    return render(request,"belt/index.html", context)
+    return render(request,"belt/index.html")
 
 def dashboard(request):
     if 'id' not in request.session:
         return redirect('/')
     else:
         user = User.objects.get(id = request.session['id'])
-        item = Item.objects.all()
+        mylist = user.wished.all()
+        items = Item.objects.all()
+        others = Item.objects.exclude(owner_id = request.session['id'])
         context = {
-	    	'first_name': User.objects.get(id=request.session['id']).first_name,
-            'item': item
+            'user':user,
+            'mylist': mylist,
+            'items': items,
+            'others': others
 	    }
         print "dashboard engaged"
         return render(request,"belt/dashboard.html", context)
-    
-def wished(request):
+
+def add(request):
     if 'id' not in request.session:
         return redirect('/')
-    # errors = Item.objects.item_basic_validator(request.POST)
-    # if len(errors):
-    #     for tag, errors in errors.iteritems():
-    #         messages.error(request, errors, extra_tags=tag)
-    #         print "validation in process"
-    #         request.session['id'] = User.objects.get(email=email).id
-    #         return redirect('wished_items/create')
+    else:
+        user = User.objects.get(id=request.session['id'])
+        context={
+            'user': user,
+        }
+        return render(request, 'belt/add.html', context)
 
-    # context = {
-    #     name = User.objects.get(id=request.session['id']).first_name
-    # }
-    
-    return render(request,"belt/add.html")
-
-def item(request):
+def add_to_wishlist(request):
     if 'id' not in request.session:
         return redirect('/')
+    else:
+        errors = Item.objects.item_basic_validator(request.POST)  
+        if len(errors):
+            for tag, errors in errors.iteritems():
+                messages.error(request, errors,  extra_tags=tag)
+                return redirect('add')
+        user = User.objects.get(id = request.session['id'])
+        print "user saved"
+        Item.objects.create(name=request.POST['name'], owner= user)
+        item = Item.objects.last()
+        print "wish saved"
+        item.wishlist.add(user)
+        # wish.save()
+        print "wish added"
+        return redirect('../dashboard')
+
+def item(request, id):
+    if 'id' not in request.session:
+        return redirect('/')
+    else:
+        item = Item.objects.get(id=id)
+        context={
+            'item': item,
+            'wishers': item.wishlist.all()
+        }
+
     return render(request,"belt/item_page.html", context)
+
+def add_to_my_wishlist(request, id):
+    wisher = User.objects.get(id = request.session['id'])
+    print "wisher saved"
+    item = Item.objects.get(id=id)
+    print "item saved"
+
+    item.wishlist.add(wisher)
+    item.save()
+    print "wish added"
+    return redirect('/dashboard')
+
+def un_wish(request, id):
+    item = Item.objects.get(id=id)
+    item.save()
+    wisher = User.objects.get(id = request.session['id'])
+    wisher.save()
+    item.wishlist.remove(wisher)
+    return redirect('../../dashboard')
+
+def destroy(request, id):
+    Item.objects.get(name= request.POST['name']).delete()
+    return redirect('dashboard')
 
 def logout(request):
     if 'id' not in request.session:
@@ -86,26 +129,26 @@ def logout(request):
     request.session.clear()
     return redirect('/')
 
-## -------- ACTIONS TO ITEMS
-def add_item(request):
-    if 'id' not in request.session:
-        return redirect('/')
-    else:
-        
-        name = request.POST['name']
-        user = User.objects.get(id=request.session['id'])
-        Item.objects.create(name=name, user= user)
-        item_id = Item.objects.last()
-        # user.wanted_by.create(self)
-        return redirect('dashboard')
-        # item_id= Item.objects.last().id, user_id=user
+# ## -------- ACTIONS TO ITEMS
+# def edit_wishlist(request, operation, pk):
+#     if 'id' not in request.session:
+#         return redirect('/')
+#     else:
+#         user = User.objects.get(id=request.session['id'])
+#         if Item.objects.filter(name=postData['name']) == []:
+#             new_item = Item.objects.get(pk=pk)
+#             if operation == 'add':
+#                 Wishlist.wished_item(user, new_item)
+#             elif operation == 'remove':
+#                 Wishlist.remove_item(user,new_item)
+#         else:
+#             name = request.POST['name']
+#             Item.objects.create(name=name, user=user)
+#             Wishlist.wished_item(user, new_item)
+#         return redirect('dashboard')
+#         # item_id= Item.objects.last().id, user_id=user
 
-def destroy(request, id):
-    Item.objects.get(name= request.POST['name']).delete()
-    return redirect('dashboard')
 
-def remove(request, id):
-    Item.objects.wishlist.get(name= request.POST['name']).delete()
-    return redirect('dashboard')
+
 
         

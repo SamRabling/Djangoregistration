@@ -32,7 +32,7 @@
 
 <body>
 
-    <h1> Welcome, {{ first_name }} !</h1>
+    <h1> Welcome, {{ user.first_name }} !</h1>
 
     <a href="logout">Logout</a>
     <h3> Your Wish List:</h3>
@@ -43,18 +43,18 @@
             <p class="title">Date Added</p>
             <p class="title">Action</p>
         </div>
-
-        {% for item in items %}
-        <div class="rows">
-            <p class="item_row"> <a href="items">{{ item.name }} </a> </p>
-            <p class="item_row"> {{ item.user }} </p>
-            <p class="item_row"> {{ user.item.created_at }} </p>
-            <p class="item_row"> <a href="destroy">Remove from my wishlist</a></p>
-        </div>
-        {% endfor %}
+            {% for item in mylist %}
+            <div class="rows">
+                <p class="item_row"> <a href="wished_items/{{item.id}}">{{ item.name }} </a> </p>
+                <p class="item_row"> {{ item.owner.first_name }} </p>
+                <p class="item_row"> {{ item.created_at }} </p>
+                <p class="item_row"> <a href="wished_items/unwish/{{item.id}}">Remove from my wishlist</a></p>
+            </div>
+            {% endfor %}
     </div>
+
     <div class="othersList"></div>
-        <h3> Your Wish List:</h3>
+        <h3> Other Users' Wish List:</h3>
         <div class="userList">
             <div class="rowtitles">
                 <p class="title">Item</p>
@@ -62,17 +62,17 @@
                 <p class="title">Date Added</p>
                 <p class="title">Action</p>
             </div>
-        
-            {% for item in items %}
-            <div class="rows">
-                <p class="item_row"> <a href="items">{{ name }}</a> </p>
-                <p class="item_row"> {{ user }} </p>
-                <p class="item_row"> {{ created_at }} </p>
-                <p class="item_row"> <a href="delete">Remove from my wishlist</a> </p>
-            </div>
-            {% endfor %}
+            
+                {% for item in others %}
+                    <div class="rows">
+                        <p class="item_row"> <a href="wished_items/{{item.id}}">{{ item.name }}</a> </p>
+                        <p class="item_row"> {{ item.owner.first_name }} </p>
+                        <p class="item_row"> {{ item.created_at }} </p>
+                        <p class="item_row"> <a href="wished_items/add_to_my_wishlist/{{item.id}}"> add to my wishlist</a> </p>
+                    </div>
+                {% endfor %}
     </div>
-    <p><a href="wished_items/create">Add Item</a></p>
+    <p><a href="wished_items/add">Add Item</a></p>
 </body>
 
 </html>

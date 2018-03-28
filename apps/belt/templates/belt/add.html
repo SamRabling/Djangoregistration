@@ -26,13 +26,13 @@ h1 {
     {% if messages %}
     <ul class="messages">
         {% for message in messages %}
-        <li{% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}</li>
-            {% endfor %}
+            <li{% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}</li>
+        {% endfor %}
     </ul>
     {% endif %}
 
     <div>
-        <form action="add_item" method="POST">
+        <form action="add_to_wishlist" method="POST">
         {% csrf_token %}
             Item/Product
             <input class="field" type="text" name="name">

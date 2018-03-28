@@ -38,7 +38,8 @@ class RegistrationManager(models.Manager):
         errors={}
         if len(postData['name']) < 3:
             errors['name'] = "The item name should be more than 3 characters"
-
+        return errors
+        
 class User(models.Model):
     first_name = models.CharField(max_length = 255)
     last_name = models.CharField(max_length = 255)
@@ -55,7 +56,10 @@ class Item(models.Model):
     name = models.CharField(max_length = 255)
     created_at = models.DateTimeField(auto_now_add = True)
     updated_at = models.DateTimeField(auto_now = True)
-    user = models.ForeignKey(User, related_name="added_by")
-    wishlist = models.ManyToManyField(User, related_name="wanted_by")
+    owner = models.ForeignKey(User, related_name = "wisher")
+    wishlist = models.ManyToManyField(User, related_name="wished")
+    objects = RegistrationManager()
     def __str__(self):
-        return "<Item objects: {} {} {} {}>". format(self.name, self.created_at, self.user, self.wishlist)
+        return "<Item objects: {} {} {}>". format(self.name, self.created_at, self.wishlist)
+
+
